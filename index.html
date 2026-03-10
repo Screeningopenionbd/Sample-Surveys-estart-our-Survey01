@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecting to Survey</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    .loader {
+      border: 12px solid rgba(255,255,255,0.2);
+      border-top: 12px solid #fff;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      animation: spin 1.5s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="loader"></div>
+  <h1>Preparing Your Survey</h1>
+  <p>You will be redirected in 20 seconds...</p>
+
+  <script>
+    // Wait 20 seconds, then redirect
+    setTimeout(function() {
+      window.location.href = "https://www.allcounted.com/s?did=goo5761ovxb49&lang=en_US";
+    }, 20000);
+  </script>
+</body>
+</html>
