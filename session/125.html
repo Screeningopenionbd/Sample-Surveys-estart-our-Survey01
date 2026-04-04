@@ -1,28 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Session Entry</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 20%;
-    }
-    #loading {
-      font-size: 1.5em;
-      color: #333;
-    }
-  </style>
-  <script>
-    // Redirect after 5 seconds
-    setTimeout(function() {
-      document.getElementById("loading").innerText = "Teleporting...";
-      window.location.href = "/session/123"; // target session URL
-    }, 5000);
-  </script>
+<meta charset="UTF-8">
+<title>Loader</title>
+
+<style>
+body {
+    margin: 0;
+    background: #0f172a;
+    color: white;
+    font-family: Arial;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+/* Spinner */
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #1e293b;
+    border-top: 6px solid #38bdf8;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+</style>
 </head>
+
 <body>
-  <div id="loading">Loading, please wait...</div>
+
+<div class="spinner"></div>
+<h2 id="text">Starting...</h2>
+
+<script>
+// generate random token
+function generateToken(length = 1000) {
+    let result = '';
+    const chars = '0123456789';
+    for (let i = 0; i < length; i++) {
+        result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
+}
+
+// get URL params
+const url = new URL(window.location.href);
+const params = url.searchParams;
+
+const isLanding = params.has("landing");
+const isScreening = params.has("screening");
+const token = params.get("token");
+
+// STEP 1 → First visit (no params)
+if (!isLanding && !isScreening) {
+    document.getElementById("text").innerText = "Redirecting to landing...";
+
+    const newToken = generateToken();
+
+    setTimeout(() => {
+        window.location.href = `?landing&token=${newToken}`;
+    }, 2000);
+}
+
+// STEP 2 → Landing
+else if (isLanding) {
+    document.getElementById("text").innerText = "Processing...";
+
+    setTimeout(() => {
+        window.location.href = `?screening&token=${token}`;
+    }, 2000);
+}
+
+// STEP 3 → Screening
+else if (isScreening) {
+    document.getElementById("text").innerText = "Final step...";
+
+    setTimeout(() => {
+        // FINAL DESTINATION (change this)
+        window.location.href = `https://example.com?token=${token}`;
+    }, 2000);
+}
+</script>
+
 </body>
 </html>
