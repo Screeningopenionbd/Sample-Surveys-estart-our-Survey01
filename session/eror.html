@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Screener</title>
+
+<style>
+body {
+    margin: 0;
+    background: #0f172a;
+    color: white;
+    font-family: Arial;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+/* Spinner */
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #1e293b;
+    border-top: 6px solid #38bdf8;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="spinner"></div>
+<h2 id="text">Starting...</h2>
+
+<script>
+// generate random token
+function generateToken(length = 1000) {
+    let result = '';
+    const chars = '0123456789';
+    for (let i = 0; i < length; i++) {
+        result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
+}
+
+// survey list
+const surveys = [
+"https://www.insightexpress.com/ix/Q/379663?preview=true&livePreview=True&_=0&accessCode=5549541149",
+"https://www.insightexpress.com/ix/Q/383488?preview=true&livePreview=True&_=0&accessCode=6258662808",
+"https://www.insightexpress.com/ix/Q/384783?preview=true&livePreview=True&_=0&accessCode=7041175866",
+"https://insightexpress.com/ix/Q/383423?preview=true&livePreview=True&_=0&accessCode=1170911775",
+"https://insightexpress.com/ix/Q/385514?preview=true&livePreview=True&_=0&accessCode=2874648185",
+"https://www.insightexpress.com/ix/Q/383586?preview=true&livePreview=True&_=0&accessCode=7799380815"
+];
+
+// pick random survey
+function getRandomSurvey() {
+    return surveys[Math.floor(Math.random() * surveys.length)];
+}
+
+// get URL params
+const url = new URL(window.location.href);
+const params = url.searchParams;
+
+const isLanding = params.has("landing");
+const isScreening = params.has("screening");
+const token = params.get("token");
+
+// STEP 1 → First visit
+if (!isLanding && !isScreening) {
+    document.getElementById("text").innerText = "Redirecting to landing...";
+
+    const newToken = generateToken();
+
+    setTimeout(() => {
+        window.location.href = `?landing&token=${newToken}`;
+    }, 2000);
+}
+
+// STEP 2 → Landing
+else if (isLanding) {
+    document.getElementById("text").innerText = "Processing...";
+
+    setTimeout(() => {
+        window.location.href = `?screening&token=${token}`;
+    }, 2000);
+}
+
+// STEP 3 → Screening
+else if (isScreening) {
+    document.getElementById("text").innerText = "Final step...";
+
+    setTimeout(() => {
+        const surveyUrl = getRandomSurvey();
+        window.location.href = `${surveyUrl}&token=${token}`;
+    }, 2000);
+}
+</script>
+
+</body>
+</html>
